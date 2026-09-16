@@ -2,6 +2,9 @@ const TaskRow = ({title, storyPoints, setTasks, id}) => {
     const handleDelete = () => {
         setTasks(o => o.filter(e => e.id !== id))
     }
+    const handleStoryPoints = () => {
+        setTasks(oldValue => oldValue.map(el => el.id === id ? {} : el))
+    }
     return (
         <div className="task-row">
             <button className="task-check"></button>
