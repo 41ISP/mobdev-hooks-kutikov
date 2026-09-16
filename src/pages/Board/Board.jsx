@@ -5,6 +5,7 @@ import { nanoid } from "nanoid"
 const PageBoard = () => {
     const [taskField, setTaskField] = useState('')
     const [tasks, setTasks] = useState([])
+    const [showCompleted, setShowCompleted] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -36,14 +37,16 @@ const PageBoard = () => {
                 <div className="mount-point stats-row" id="mount-stats">
                     <div className="stat-card">
                         <div className="stat-value">24</div>
+                        {/* Всего задач */}
                         <div className="stat-label">Open</div>
                     </div>
                     <div className="stat-card">
-                        <div className="stat-value">9</div>
+                        <div className="stat-value">{tasks.filter(el => el.done === false).length}</div>
                         <div className="stat-label">In progress</div>
                     </div>
                     <div className="stat-card">
                         <div className="stat-value">61</div>
+                        {/* Завершенные задачи */}
                         <div className="stat-label">Done this sprint</div>
                     </div>
                     <div className="stat-card">
@@ -58,7 +61,10 @@ const PageBoard = () => {
                     <div
                         className="mount-point switch-row"
                         id="mount-show-completed">
-                        <span className="switch"></span>
+                        <span
+                            onClick={() => setShowCompleted(o => !o)}
+                            className={`switch${showCompleted ? " on" : ""}`}
+                        ></span>
                         <span>Show completed tasks</span>
                     </div>
                 </div>
@@ -79,7 +85,11 @@ const PageBoard = () => {
                         <button className="btn">Add</button>
                     </form>
                     <div className="task-list">
-                        {tasks.map((task, i) => <TaskRow {...task} key={i} setTasks={setTasks} />)}
+                        {showCompleted ? 
+                            tasks
+                                .filter(el => el.done)
+                                .map((task, i) => <TaskRow {...task} key={i} setTasks={setTasks} />)
+                            : tasks.map((task, i) => <TaskRow {...task} key={i} setTasks={setTasks} />)}
                     </div>
                 </div>
             </div>

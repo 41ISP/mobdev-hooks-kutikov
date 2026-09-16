@@ -1,18 +1,29 @@
-const TaskRow = ({title, storyPoints, setTasks, id}) => {
+const TaskRow = ({title, storyPoints, setTasks, id, done}) => {
     const handleDelete = () => {
         setTasks(o => o.filter(e => e.id !== id))
     }
-    const handleStoryPoints = () => {
-        setTasks(oldValue => oldValue.map(el => el.id === id ? {} : el))
+    const handleStoryPoints = (diff) => {
+        setTasks(oldValue => oldValue.map(
+            el => 
+                el.id === id ? 
+                    {...el, storyPoints: el.storyPoints + diff} 
+                    : el))
+    }
+    const handleCheck = () => {
+        setTasks(oldValue => oldValue.map(
+            el => 
+                el.id === id ? 
+                    {...el, done: !el.done} 
+                    : el))
     }
     return (
         <div className="task-row">
-            <button className="task-check"></button>
-            <span className="task-title">
+            <button onClick={handleCheck} className={`task-check${done ? " checked" : ""}`}></button>
+            <span className={`task-title${done ? " done" : ""}`}>
                 {title}
             </span>
             <div className="estimate-stepper">
-                <button className="stepper-btn">−</button>
+                <button onClick={() => handleStoryPoints(-1)} className="stepper-btn">−</button>
                 <span className="stepper-value">{storyPoints}</span>
                 <button className="stepper-btn">+</button>
             </div>
